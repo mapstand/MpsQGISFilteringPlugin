@@ -116,10 +116,14 @@ class MapStandEditsFilteringDialog(QDialog):
         btn_filters_delete = QPushButton("Delete Selected")
         btn_filters_delete.clicked.connect(self.action_filters_delete)
 
+        btn_filters_reset = QPushButton("Reset")
+        btn_filters_reset.clicked.connect(self.action_filters_reset)
+
         layout_existing.addWidget(QLabel("Double-click an existing filter to edit"))
         layout_existing.addWidget(self.existing_filter_list)
         layout_existing.addWidget(btn_filters_apply)
         layout_existing.addWidget(btn_filters_delete)
+        layout_existing.addWidget(btn_filters_reset)
 
         self.layout_main.addWidget(group_existing)
 
@@ -187,6 +191,15 @@ class MapStandEditsFilteringDialog(QDialog):
         self.txt_filter_name.clear()
         self.txt_search_filterable_fields.clear()
         self.txt_list_selected_fields.clear()
+
+    def action_filters_reset(self):
+
+        self.remove_filters_from_layers()
+        custom_variables = self._project_instance_custom_variables
+        _ = custom_variables.pop("editing_filters", None)
+        self._project_instance.setCustomVariables(custom_variables)
+        self.clear_parameter_widgets()
+        self.existing_filter_list.clear()
 
     def action_save_filter(self):
         self.save_filter_configuration_to_qgis_project()
