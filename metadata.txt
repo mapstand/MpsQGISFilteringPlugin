@@ -1,0 +1,9 @@
+[general]
+name=MapStand QGIS Filtering
+description=MapStand QGIS Filtering plugin
+about=Manages global layer filtering
+version=3.0
+qgisMinimumVersion=3.0
+author=Pete Lelliott
+email=pete.lelliott@mapstand.com
+repository=https://github.com/mapstand/MpsQGISFilteringPlugin
