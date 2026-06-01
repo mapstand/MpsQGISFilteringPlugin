@@ -1,4 +1,10 @@
 # Byte-compiled / optimized / DLL files
+.env
+
+# Local QGIS profile data (created by make setup)
+qgis-profile/
+qgis-cache/
+
 __pycache__/
 *.py[cod]
 

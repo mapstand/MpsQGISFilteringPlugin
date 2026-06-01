@@ -1,0 +1,28 @@
+# Simple QGIS Container Services to allow easy development on future QGIS versions
+services:
+  qgis:
+    image: qgis/qgis:${QGIS_VERSION:-latest}
+
+    user: "${UID}:${GID}"
+
+    environment:
+      DISPLAY: ${DISPLAY}
+      QT_X11_NO_MITSHM: "1"
+      HOME: /home/qgis
+      XDG_RUNTIME_DIR: /tmp/runtime-qgis
+      QT_QPA_PLATFORM: xcb
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./qgis-profile:/home/qgis/.local/share/QGIS
+      - ../:/home/qgis/.local/share/QGIS/QGIS3/profiles/default/python/plugins/MpsQGISFilteringPlugin
+      - ../:/home/qgis/.local/share/QGIS/QGIS4/profiles/default/python/plugins/MpsQGISFilteringPlugin
+
+    working_dir: /home/qgis
+
+    stdin_open: true
+    tty: true
+
+    command: qgis
