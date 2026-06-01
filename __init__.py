@@ -9,8 +9,14 @@
 # (at your option) any later version.
 # ---------------------------------------------------------------------
 import os
-from PyQt5.QtWidgets import QAction, QMessageBox
-from qgis.core import QgsProject, QgsAction
+from qgis.PyQt.QtWidgets import QMessageBox
+from qgis.core import QgsProject
+
+try:
+    from qgis.PyQt.QtGui import QAction   # Qt6 / QGIS 4
+except ImportError:
+    from qgis.PyQt.QtWidgets import QAction  # Qt5 / QGIS 3
+
 from .form import MapStandEditsFilteringDialog
 
 

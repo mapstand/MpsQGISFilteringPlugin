@@ -1,21 +1,10 @@
 from qgis.core import (
-    QgsAction,
     QgsProject,
-    QgsEditorWidgetSetup,
-    QgsFieldConstraints,
-    QgsRelation,
-    QgsWkbTypes,
-    QgsAttributeEditorContainer,
-    QgsAttributeEditorRelation,
-    QgsAttributeEditorField,
-    QgsDefaultValue,
     QgsMapLayer,
-    QgsVectorLayer,
-    QgsDataSourceUri,
-    QgsLayerTreeLayer,
 )
 
-from PyQt5.QtWidgets import (
+from qgis.PyQt.QtWidgets import (
+    QAbstractItemView,
     QDialog,
     QVBoxLayout,
     QLineEdit,
@@ -23,11 +12,23 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QLabel,
     QListWidget,
-    QApplication,
     QGroupBox,
-    QHBoxLayout,
+    QHBoxLayout
 )
 
+# QgsMapLayer.VectorLayer (QGIS 3) → Qgis.LayerType.Vector (QGIS 4)
+try:
+    from qgis.core import Qgis
+    _VECTOR_LAYER_TYPE = Qgis.LayerType.Vector
+except AttributeError: 
+    _VECTOR_LAYER_TYPE = QgsMapLayer.VectorLayer
+
+
+# Flat enums (PyQt5) → Scoped enums (PyQt6)
+try:
+    _MULTI_SELECTION = QAbstractItemView.SelectionMode.MultiSelection
+except AttributeError: 
+    _MULTI_SELECTION = QAbstractItemView.MultiSelection
 
 class MapStandEditsFilteringDialog(QDialog):
     def __init__(self, iface, parent):
@@ -40,7 +41,7 @@ class MapStandEditsFilteringDialog(QDialog):
         return [
             layer
             for layer in QgsProject.instance().mapLayers().values()
-            if layer.type() == QgsMapLayer.VectorLayer
+            if layer.type() == _VECTOR_LAYER_TYPE
         ]
 
     @property
@@ -107,7 +108,7 @@ class MapStandEditsFilteringDialog(QDialog):
         self.existing_filter_list.itemDoubleClicked.connect(
             self.action_load_filter_configuration_from_project
         )
-        self.existing_filter_list.setSelectionMode(QListWidget.MultiSelection)
+        self.existing_filter_list.setSelectionMode(_MULTI_SELECTION)
         self.update_existing_filter_list()
 
         btn_filters_apply = QPushButton("Apply Selected")
